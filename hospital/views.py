@@ -14,6 +14,8 @@ from datetime import datetime
 import random
 import numpy as np
 import joblib
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import csrf_protect
 
 # Create your views here.
 def home_view(request):
@@ -847,20 +849,11 @@ def generate_health_data():
         "timestamp": datetime.now().isoformat()
     }
 
+@ensure_csrf_cookie
 def predict_disease_view(request):
     return render(request, 'hospital/predict_disease.html', {'symptoms_list': symptoms_list})
 
-def get_vitals(request):
-    """API endpoint to get vital signs"""
-    try:
-        health_data = generate_health_data()
-        return JsonResponse(health_data)
-    except Exception as e:
-        return JsonResponse({
-            'error': 'Failed to fetch health data',
-            'message': str(e)
-        }, status=500)
-
+@csrf_protect
 def make_prediction(request):
     """API endpoint for disease prediction"""
     if request.method == 'POST':

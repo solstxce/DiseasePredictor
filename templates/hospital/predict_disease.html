@@ -151,6 +151,9 @@
 
         <div class="card shadow-sm mb-4">
             <div class="card-body">
+                <!-- Add this line at the start of your form -->
+                {% csrf_token %}
+                
                 <!-- Get Vitals Button -->
                 <button class="btn btn-success btn-get-vitals" id="getVitalsBtn">
                     <i class="fas fa-heartbeat me-2"></i>Get Vital Signs
@@ -412,7 +415,7 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
                 },
                 body: JSON.stringify({
                     symptoms: selectedSymptoms,

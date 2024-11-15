@@ -148,3 +148,24 @@ EMAIL_RECEIVING_USER = ['to@gmail.com'] # email on which you will receive messag
 
 CORS_ALLOW_ALL_ORIGINS = True  # For development only
 CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://predictors.site',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
+
+# If you're using HTTPS
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# If you need to debug CSRF issues
+CSRF_COOKIE_HTTPONLY = False  # Allows JavaScript to read the cookie
+
+CORS_ALLOWED_ORIGINS = [
+    'https://predictors.site',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
+
+CORS_ALLOW_CREDENTIALS = True
