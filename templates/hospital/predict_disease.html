@@ -31,17 +31,6 @@
         text-align: center;
     }
 
-    .card {
-        border: none;
-        border-radius: 20px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease;
-    }
-
-    .card:hover {
-        transform: translateY(-5px);
-    }
-
     .vitals-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -51,11 +40,31 @@
 
     .vital-card {
         position: relative;
-        overflow: hidden;
         background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
         padding: 1.5rem;
         border-radius: 15px;
         text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .vital-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .vital-loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.9);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        z-index: 2;
     }
 
     .vital-icon {
@@ -72,55 +81,18 @@
     }
 
     .vital-label {
+        font-size: 1rem;
         color: #666;
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
     }
 
-    .select2-container {
-        width: 100% !important;
-    }
-
-    .select2-container--default .select2-selection--multiple {
-        border: 2px solid #e2e8f0;
-        border-radius: 12px;
+    .vital-error {
+        color: #856404;
+        background-color: #fff3cd;
+        border: 1px solid #ffeeba;
         padding: 0.5rem;
-    }
-
-    .select2-container--default.select2-container--focus .select2-selection--multiple {
-        border-color: #0d6efd;
-        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-    }
-
-    .btn-predict {
-        padding: 1rem 2rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
-        border: none;
-        transition: all 0.3s ease;
-        width: 100%;
-        margin-top: 1rem;
-    }
-
-    .btn-predict:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
-    }
-
-    .vital-loading {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.9);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1;
+        border-radius: 5px;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
     }
 
     .progress-bar {
@@ -131,43 +103,56 @@
         left: 0;
         width: 0;
         transition: width 0.1s linear;
-    }
-
-    .vital-error {
-        color: #dc3545;
-        font-size: 0.9rem;
-        margin-top: 0.5rem;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
     }
 
     .btn-get-vitals {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
         background: linear-gradient(135deg, #20c997 0%, #198754 100%);
-        margin-bottom: 1.5rem;
+        border: none;
+        box-shadow: 0 4px 6px rgba(32, 201, 151, 0.2);
     }
 
     .btn-get-vitals:hover {
-        box-shadow: 0 5px 15px rgba(32, 201, 151, 0.3);
+        background: linear-gradient(135deg, #198754 0%, #157347 100%);
+        box-shadow: 0 6px 8px rgba(32, 201, 151, 0.3);
     }
 
-    @media (max-width: 768px) {
-        .prediction-section {
-            padding: 2rem;
-        }
-        
-        .prediction__title {
-            font-size: 2rem;
-        }
+    .btn-predict {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.1rem;
+        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+        border: none;
+        box-shadow: 0 4px 6px rgba(13, 110, 253, 0.2);
+    }
+
+    .btn-predict:hover {
+        background: linear-gradient(135deg, #0a58ca 0%, #084298 100%);
+        box-shadow: 0 6px 8px rgba(13, 110, 253, 0.3);
+    }
+
+    .results-card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-top: 2rem;
     }
 </style>
 
 <section class="prediction-section">
     <div class="prediction__container">
         <h1 class="prediction__title">Disease Prediction System</h1>
-        <p class="prediction__subtitle">Enter symptoms and get instant disease predictions powered by AI</p>
+        <p class="prediction__subtitle">Get instant disease predictions using advanced AI and real-time vital signs monitoring</p>
 
-        <div class="card mb-4">
+        <div class="card shadow-sm mb-4">
             <div class="card-body">
                 <!-- Get Vitals Button -->
-                <button class="btn btn-success btn-predict btn-get-vitals" id="getVitalsBtn">
+                <button class="btn btn-success btn-get-vitals" id="getVitalsBtn">
                     <i class="fas fa-heartbeat me-2"></i>Get Vital Signs
                 </button>
 
@@ -221,7 +206,9 @@
                 <div class="form-group mb-4">
                     <label class="form-label">Select Symptoms</label>
                     <select class="form-control" id="symptoms" multiple data-placeholder="Search and select symptoms...">
-                        <!-- Will be populated via JavaScript -->
+                        {% for symptom in symptoms_list %}
+                            <option value="{{ symptom }}">{{ symptom|title|replace:"_"," " }}</option>
+                        {% endfor %}
                     </select>
                 </div>
 
@@ -233,7 +220,7 @@
         </div>
 
         <!-- Results Card -->
-        <div class="card" id="resultsCard" style="display: none;">
+        <div class="card results-card" id="resultsCard" style="display: none;">
             <div class="card-body">
                 <h4 class="card-title mb-3">Prediction Results</h4>
                 <div id="predictionResults"></div>
@@ -248,46 +235,15 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
-    // List of symptoms
-    const symptoms_list = [
-    "itching", "skin_rash", "nodal_skin_eruptions", "continuous_sneezing", "shivering", "chills", "joint_pain",
-    "stomach_pain", "acidity", "ulcers_on_tongue", "muscle_wasting", "vomiting", "burning_micturition",
-    "spotting_urination", "fatigue", "weight_gain", "anxiety", "cold_hands_and_feets", "mood_swings",
-    "weight_loss", "restlessness", "lethargy", "patches_in_throat", "irregular_sugar_level", "cough",
-    "high_fever", "sunken_eyes", "breathlessness", "sweating", "dehydration", "indigestion", "headache",
-    "yellowish_skin", "dark_urine", "nausea", "loss_of_appetite", "pain_behind_the_eyes", "back_pain",
-    "constipation", "abdominal_pain", "diarrhoea", "mild_fever", "yellow_urine", "yellowing_of_eyes",
-    "acute_liver_failure", "fluid_overload", "swelling_of_stomach", "swelled_lymph_nodes", "malaise",
-    "blurred_and_distorted_vision", "phlegm", "throat_irritation", "redness_of_eyes", "sinus_pressure",
-    "runny_nose", "congestion", "chest_pain", "weakness_in_limbs", "fast_heart_rate",
-    "pain_during_bowel_movements", "pain_in_anal_region", "bloody_stool", "irritation_in_anus", "neck_pain",
-    "dizziness", "cramps", "bruising", "obesity", "swollen_legs", "swollen_blood_vessels",
-    "puffy_face_and_eyes", "enlarged_thyroid", "brittle_nails", "swollen_extremeties", "excessive_hunger",
-    "extra_marital_contacts", "drying_and_tingling_lips", "slurred_speech", "knee_pain", "hip_joint_pain",
-    "muscle_weakness", "stiff_neck", "swelling_joints", "movement_stiffness", "spinning_movements",
-    "loss_of_balance", "unsteadiness", "weakness_of_one_body_side", "loss_of_smell", "bladder_discomfort",
-    "foul_smell_of_urine", "continuous_feel_of_urine", "passage_of_gases", "internal_itching",
-    "toxic_look_(typhos)", "depression", "irritability", "muscle_pain", "altered_sensorium",
-    "red_spots_over_body", "belly_pain", "abnormal_menstruation", "dischromic_patches",
-    "watering_from_eyes", "increased_appetite", "polyuria", "family_history", "mucoid_sputum",
-    "rusty_sputum", "lack_of_concentration", "visual_disturbances", "receiving_blood_transfusion",
-    "receiving_unsterile_injections", "coma", "stomach_bleeding", "distention_of_abdomen",
-    "history_of_alcohol_consumption", "fluid_overload", "blood_in_sputum", "prominent_veins_on_calf",
-    "palpitations", "painful_walking", "pus_filled_pimples", "blackheads", "scurring", "skin_peeling",
-    "silver_like_dusting", "small_dents_in_nails", "inflammatory_nails", "blister",
-    "red_sore_around_nose", "yellow_crust_ooze"
-];
-
     $(document).ready(function() {
         // Initialize Select2
         $('#symptoms').select2({
-            data: symptoms_list.map(symptom => ({
-                id: symptom,
-                text: symptom.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
-            }))
+            theme: 'bootstrap4',
+            placeholder: 'Search and select symptoms...',
+            allowClear: true,
+            width: '100%'
         });
 
-        // Function to get vital signs with 10-second verification
         async function getVitalSigns() {
             const readings = {
                 temperature: [],
@@ -298,7 +254,7 @@
             const duration = 10000; // 10 seconds
             let progress = 0;
 
-            // Show loading state
+            // Show loading state for all vital cards
             $('.vital-loading').show();
             $('.vital-error').hide();
             $('#getVitalsBtn').prop('disabled', true).html(
@@ -306,6 +262,7 @@
             );
 
             try {
+                // Take measurements for 10 seconds
                 while (Date.now() - startTime < duration) {
                     progress = ((Date.now() - startTime) / duration) * 100;
                     $('.progress-bar').css('width', `${progress}%`);
@@ -319,6 +276,7 @@
                     readings.humidity.push(parseFloat(data.humidity));
                     readings.pulse.push(parseFloat(data.pulse));
 
+                    // Wait 500ms before next reading
                     await new Promise(resolve => setTimeout(resolve, 500));
                 }
 
@@ -333,6 +291,15 @@
                 $('#temperatureValue').text(`${averages.temperature.toFixed(1)}°F`);
                 $('#humidityValue').text(`${averages.humidity.toFixed(1)}%`);
                 $('#pulseValue').text(`${averages.pulse.toFixed(0)} BPM`);
+
+                // Add visual feedback for abnormal values
+                if (averages.temperature > 99.5) {
+                    $('#temperatureValue').addClass('text-danger');
+                } else if (averages.temperature > 98.6) {
+                    $('#temperatureValue').addClass('text-warning');
+                } else {
+                    $('#temperatureValue').addClass('text-success');
+                }
 
             } catch (error) {
                 console.error('Error:', error);
@@ -371,7 +338,13 @@
         // Handle prediction
         $('#predictButton').click(function() {
             const selectedSymptoms = $('#symptoms').val();
-            const patientName = $('#patientName').val();
+            const patientName = $('#patientName').val().trim();
+
+            // Validation
+            if (!patientName) {
+                alert('Please enter patient name');
+                return;
+            }
 
             if (!selectedSymptoms.length) {
                 alert('Please select at least one symptom');
@@ -383,7 +356,12 @@
                 '<span class="spinner-border spinner-border-sm me-2"></span>Predicting...'
             );
 
-            // Send prediction request to our Django backend
+            // Get current vital values
+            const temperature = parseFloat($('#temperatureValue').text()) || 98.6;
+            const humidity = parseFloat($('#humidityValue').text()) || 45;
+            const pulse = parseFloat($('#pulseValue').text()) || 75;
+
+            // Send prediction request to Django backend
             fetch('/api/predict', {
                 method: 'POST',
                 headers: {
@@ -394,9 +372,9 @@
                     symptoms: selectedSymptoms,
                     patient_name: patientName,
                     vitals: {
-                        temperature: parseFloat($('#temperatureValue').text()),
-                        humidity: parseFloat($('#humidityValue').text()),
-                        pulse: parseFloat($('#pulseValue').text())
+                        temperature: temperature,
+                        humidity: humidity,
+                        pulse: pulse
                     }
                 })
             })
@@ -405,10 +383,35 @@
                 return response.json();
             })
             .then(data => {
+                // Format confidence as percentage
+                const confidence = (data.confidence * 100).toFixed(1);
+                
+                // Determine alert class based on confidence
+                let alertClass = 'alert-success';
+                if (confidence < 50) alertClass = 'alert-danger';
+                else if (confidence < 75) alertClass = 'alert-warning';
+
                 const resultsHtml = `
-                    <div class="alert alert-success">
-                        <h5>Predicted Disease: ${data.disease}</h5>
-                        <p>Confidence: ${(data.confidence * 100).toFixed(1)}%</p>
+                    <div class="alert ${alertClass}">
+                        <h5 class="mb-3">Prediction Results</h5>
+                        <div class="mb-2">
+                            <strong>Patient:</strong> ${patientName}
+                        </div>
+                        <div class="mb-2">
+                            <strong>Predicted Disease:</strong> ${data.disease}
+                        </div>
+                        <div class="mb-2">
+                            <strong>Confidence:</strong> ${confidence}%
+                        </div>
+                        <div class="mb-2">
+                            <strong>Vital Signs:</strong><br>
+                            Temperature: ${temperature}°F<br>
+                            Heart Rate: ${pulse} BPM<br>
+                            Humidity: ${humidity}%
+                        </div>
+                        <div class="mt-3 small text-muted">
+                            Prediction made at: ${new Date().toLocaleString()}
+                        </div>
                     </div>
                 `;
                 $('#predictionResults').html(resultsHtml);
@@ -419,6 +422,12 @@
                 $('#predictionResults').html(`
                     <div class="alert alert-danger">
                         <h5>Prediction Failed</h5>
+                        <p>We encountered an error while making the prediction. This might be due to:</p>
+                        <ul>
+                            <li>Connection issues</li>
+                            <li>Invalid symptom combination</li>
+                            <li>Server processing error</li>
+                        </ul>
                         <p>Please try again or contact support if the problem persists.</p>
                     </div>
                 `);

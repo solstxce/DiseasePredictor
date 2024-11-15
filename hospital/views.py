@@ -10,6 +10,10 @@ from django.conf import settings
 from django.db.models import Q
 import json
 import requests
+from datetime import datetime
+import random
+import numpy as np
+import joblib
 
 # Create your views here.
 def home_view(request):
@@ -822,22 +826,74 @@ def contactus_view(request):
             return render(request, 'hospital/contactussuccess.html')
     return render(request, 'hospital/contactus.html', {'form':sub})
 
+# Symptoms list (same as in Flask app)
+symptoms_list = [
+    "itching", "skin_rash", "nodal_skin_eruptions", "continuous_sneezing", "shivering", "chills", "joint_pain",
+    "stomach_pain", "acidity", "ulcers_on_tongue", "muscle_wasting", "vomiting", "burning_micturition",
+    "spotting_urination", "fatigue", "weight_gain", "anxiety", "cold_hands_and_feets", "mood_swings",
+    "weight_loss", "restlessness", "lethargy", "patches_in_throat", "irregular_sugar_level", "cough",
+    "high_fever", "sunken_eyes", "breathlessness", "sweating", "dehydration", "indigestion", "headache",
+    "yellowish_skin", "dark_urine", "nausea", "loss_of_appetite", "pain_behind_the_eyes", "back_pain",
+    "constipation", "abdominal_pain", "diarrhoea", "mild_fever", "yellow_urine", "yellowing_of_eyes",
+    "acute_liver_failure", "fluid_overload", "swelling_of_stomach", "swelled_lymph_nodes", "malaise"
+]
+
+def generate_health_data():
+    """Generate simulated health data"""
+    return {
+        "temperature": round(random.uniform(97, 99), 1),  # Converting to Fahrenheit
+        "humidity": round(random.uniform(30, 50), 1),
+        "pulse": random.randint(60, 100),
+        "timestamp": datetime.now().isoformat()
+    }
+
 def predict_disease_view(request):
-    return render(request, 'hospital/predict_disease.html')
+    return render(request, 'hospital/predict_disease.html', {'symptoms_list': symptoms_list})
 
 def get_vitals(request):
+    """API endpoint to get vital signs"""
     try:
-        response = requests.get('https://api.predictors.site/api/data')
-        return JsonResponse(response.json())
-    except:
-        return JsonResponse({'error': 'Failed to fetch vitals'}, status=500)
+        health_data = generate_health_data()
+        return JsonResponse(health_data)
+    except Exception as e:
+        return JsonResponse({
+            'error': 'Failed to fetch health data',
+            'message': str(e)
+        }, status=500)
 
 def make_prediction(request):
+    """API endpoint for disease prediction"""
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            response = requests.post('https://api.predictors.site/api/predict', json=data)
-            return JsonResponse(response.json())
-        except:
-            return JsonResponse({'error': 'Prediction failed'}, status=500)
-    return JsonResponse({'error': 'Invalid request'}, status=400)
+            symptoms = data.get('symptoms', [])
+            
+            # Create symptom vector
+            symptom_vector = np.zeros(len(symptoms_list))
+            for symptom in symptoms:
+                if symptom in symptoms_list:
+                    index = symptoms_list.index(symptom)
+                    symptom_vector[index] = 1
+            
+            # Load model and make prediction
+            model = joblib.load('disease_prediction_model.joblib')
+            prediction = model.predict([symptom_vector])[0]
+            probability = model.predict_proba([symptom_vector]).max()
+            
+            return JsonResponse({
+                'disease': prediction,
+                'confidence': float(probability),
+                'timestamp': datetime.now().isoformat()
+            })
+            
+        except Exception as e:
+            print(f"Error in disease prediction: {e}")
+            return JsonResponse({
+                'error': 'Failed to predict disease',
+                'message': str(e)
+            }, status=500)
+    
+    return JsonResponse({
+        'symptoms': symptoms_list,
+        'message': 'Please select symptoms for prediction'
+    })
