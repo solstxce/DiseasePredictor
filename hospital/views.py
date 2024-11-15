@@ -890,3 +890,62 @@ def make_prediction(request):
         'symptoms': symptoms_list,
         'message': 'Please select symptoms for prediction'
     })
+
+def get_vitals(request):
+    """Generate and return simulated vital signs data"""
+    try:
+        # Generate realistic vital signs data
+        vitals_data = {
+            "temperature": round(random.uniform(97.0, 99.0), 1),  # Normal body temperature range in Fahrenheit
+            "humidity": round(random.uniform(30, 50), 1),  # Normal room humidity range
+            "pulse": round(random.uniform(60, 100), 0),  # Normal heart rate range
+            "timestamp": datetime.now().isoformat()
+        }
+        
+        return JsonResponse(vitals_data)
+    except Exception as e:
+        return JsonResponse({
+            'error': 'Failed to generate vital signs',
+            'message': str(e)
+        }, status=500)
+
+# Make sure this is added alongside your existing views
+@ensure_csrf_cookie
+def predict_disease_view(request):
+    return render(request, 'hospital/predict_disease.html')
+
+@csrf_protect
+def make_prediction(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            symptoms = data.get('symptoms', [])
+            
+            # Create symptom vector
+            symptom_vector = np.zeros(len(symptoms_list))
+            for symptom in symptoms:
+                if symptom in symptoms_list:
+                    index = symptoms_list.index(symptom)
+                    symptom_vector[index] = 1
+            
+            # Load model and make prediction
+            model = joblib.load('disease_prediction_model.joblib')
+            prediction = model.predict([symptom_vector])[0]
+            probability = model.predict_proba([symptom_vector]).max()
+            
+            return JsonResponse({
+                'disease': prediction,
+                'confidence': float(probability),
+                'timestamp': datetime.now().isoformat()
+            })
+            
+        except Exception as e:
+            return JsonResponse({
+                'error': 'Prediction failed',
+                'message': str(e)
+            }, status=500)
+    
+    return JsonResponse({
+        'error': 'Invalid request method',
+        'message': 'This endpoint only accepts POST requests'
+    }, status=405)
