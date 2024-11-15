@@ -824,3 +824,20 @@ def contactus_view(request):
 
 def predict_disease_view(request):
     return render(request, 'hospital/predict_disease.html')
+
+def get_vitals(request):
+    try:
+        response = requests.get('https://api.predictors.site/api/data')
+        return JsonResponse(response.json())
+    except:
+        return JsonResponse({'error': 'Failed to fetch vitals'}, status=500)
+
+def make_prediction(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            response = requests.post('https://api.predictors.site/api/predict', json=data)
+            return JsonResponse(response.json())
+        except:
+            return JsonResponse({'error': 'Prediction failed'}, status=500)
+    return JsonResponse({'error': 'Invalid request'}, status=400)

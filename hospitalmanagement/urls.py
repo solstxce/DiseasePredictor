@@ -64,7 +64,8 @@ urlpatterns = [
     path('approve-appointment/<int:pk>', views.approve_appointment_view,name='approve-appointment'),
     path('reject-appointment/<int:pk>', views.reject_appointment_view,name='reject-appointment'),
     path('predict-disease', views.predict_disease_view, name='predict-disease'),
-    # path('predict-disease-result', views.predict_disease_result_view, name='predict-disease-result'),
+    path('api/vitals', views.get_vitals, name='get-vitals'),
+    path('api/predict', views.make_prediction, name='make-prediction'),
 ]
 
 
