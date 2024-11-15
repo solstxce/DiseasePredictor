@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Doctor Dashboard | Healthcare Portal</title>
+
+    <!-- CSS Dependencies -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --appointments-gradient: linear-gradient(135deg, #3b82f6, #2563eb);
+            --patients-gradient: linear-gradient(135deg, #f59e0b, #d97706);
+            --discharged-gradient: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .dashboard-cards {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .stat-header {
+            padding: 1.5rem;
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .stat-title {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .stat-icon {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.5rem;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: translateY(-50%) scale(1.1);
+            opacity: 1;
+        }
+
+        /* Card-specific styles */
+        .appointments-card .stat-header {
+            background: var(--appointments-gradient);
+        }
+
+        .patients-card .stat-header {
+            background: var(--patients-gradient);
+        }
+
+        .discharged-card .stat-header {
+            background: var(--discharged-gradient);
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stat-card {
+            animation: slideUp 0.5s ease-out forwards;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-cards {
+                padding: 1rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .stat-icon {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-cards">
+        <div class="stats-grid">
+            <!-- Appointments Card -->
+            <div class="stat-card appointments-card">
+                <div class="stat-header">
+                    <div class="stat-number">{{appointmentcount}}</div>
+                    <div class="stat-title">Appointments For You</div>
+                    <i class="fas fa-calendar-check stat-icon"></i>
+                </div>
+            </div>
+
+            <!-- Patients Card -->
+            <div class="stat-card patients-card">
+                <div class="stat-header">
+                    <div class="stat-number">{{patientcount}}</div>
+                    <div class="stat-title">Patients Under Your Care</div>
+                    <i class="fas fa-user-injured stat-icon"></i>
+                </div>
+            </div>
+
+            <!-- Discharged Card -->
+            <div class="stat-card discharged-card">
+                <div class="stat-header">
+                    <div class="stat-number">{{patientdischarged}}</div>
+                    <div class="stat-title">Patients Discharged</div>
+                    <i class="fas fa-check-circle stat-icon"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

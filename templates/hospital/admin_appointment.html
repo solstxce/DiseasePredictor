@@ -1,0 +1,233 @@
+{% extends 'hospital/admin_base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .dashboard-container {
+        padding: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .page-header {
+        margin-bottom: 2.5rem;
+        text-align: center;
+    }
+
+    .page-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 0.5rem;
+    }
+
+    .page-subtitle {
+        color: #64748b;
+        font-size: 1.1rem;
+    }
+
+    .appointment-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .appointment-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .appointment-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .card-content {
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .card-icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 2rem;
+        transition: all 0.3s ease;
+    }
+
+    .view-appointments .card-icon {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: white;
+    }
+
+    .book-appointment .card-icon {
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        color: white;
+    }
+
+    .approve-appointment .card-icon {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: white;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 1rem;
+    }
+
+    .card-description {
+        color: #64748b;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+
+    .card-action {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.875rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        gap: 0.5rem;
+    }
+
+    .view-action {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: white;
+    }
+
+    .book-action {
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        color: white;
+    }
+
+    .approve-action {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: white;
+    }
+
+    .card-action:hover {
+        transform: translateY(-2px);
+        color: white;
+    }
+
+    .view-action:hover {
+        box-shadow: 0 8px 16px rgba(37, 99, 235, 0.2);
+    }
+
+    .book-action:hover {
+        box-shadow: 0 8px 16px rgba(22, 163, 74, 0.2);
+    }
+
+    .approve-action:hover {
+        box-shadow: 0 8px 16px rgba(217, 119, 6, 0.2);
+    }
+
+    /* Animation */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .appointment-card {
+        animation: fadeInUp 0.5s ease-out forwards;
+    }
+
+    .appointment-card:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .appointment-card:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .dashboard-container {
+            padding: 1rem;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+    }
+</style>
+
+<div class="dashboard-container">
+    <div class="page-header">
+        <h1 class="page-title">Appointment Management</h1>
+        <p class="page-subtitle">Manage and monitor all hospital appointments</p>
+    </div>
+
+    <div class="appointment-grid">
+        <!-- View Appointments -->
+        <div class="appointment-card view-appointments">
+            <div class="card-content">
+                <div class="card-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h3 class="card-title">View Appointments</h3>
+                <p class="card-description">
+                    Check all scheduled appointments and their details
+                </p>
+                <a href="/admin-view-appointment" class="card-action view-action">
+                    <i class="fas fa-eye"></i>
+                    View Schedule
+                </a>
+            </div>
+        </div>
+
+        <!-- Book Appointment -->
+        <div class="appointment-card book-appointment">
+            <div class="card-content">
+                <div class="card-icon">
+                    <i class="fas fa-calendar-plus"></i>
+                </div>
+                <h3 class="card-title">Book Appointment</h3>
+                <p class="card-description">
+                    Schedule new appointments for patients
+                </p>
+                <a href="/admin-add-appointment" class="card-action book-action">
+                    <i class="fas fa-plus"></i>
+                    Book Now
+                </a>
+            </div>
+        </div>
+
+        <!-- Approve Appointment -->
+        <div class="appointment-card approve-appointment">
+            <div class="card-content">
+                <div class="card-icon">
+                    <i class="fas fa-clipboard-check"></i>
+                </div>
+                <h3 class="card-title">Approve Appointments</h3>
+                <p class="card-description">
+                    Review and approve pending appointments
+                </p>
+                <a href="/admin-approve-appointment" class="card-action approve-action">
+                    <i class="fas fa-check"></i>
+                    Review
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        @page {
+            size: A4;
+            margin: 1cm;
+        }
+
+        :root {
+            --primary-color: #3b82f6;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+        }
+
+        .invoice-box {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2.5rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .hospital-title {
+            color: var(--primary-color);
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0 0 1rem 0;
+        }
+
+        .dates-info {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .patient-doctor-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .info-section {
+            margin-bottom: 2rem;
+        }
+
+        .info-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .symptoms-section {
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .charges-section {
+            border-top: 2px solid var(--border-color);
+            padding-top: 1.5rem;
+        }
+
+        .charge-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem 0;
+        }
+
+        .total-amount {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            border-top: 2px solid var(--border-color);
+            padding-top: 1rem;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        @media print {
+            .invoice-box {
+                box-shadow: none;
+                margin: 0;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="invoice-box">
+        <div class="header">
+            <h1 class="hospital-title">Hospital Management</h1>
+            <div class="dates-info">
+                <div>
+                    <div>Admit Date: {{admitDate}}</div>
+                    <div>Release Date: {{releaseDate}}</div>
+                    <div>Days Spent: {{daySpent}}</div>
+                </div>
+                <div>
+                    <div>Invoice #: HMS-{{mobile}}</div>
+                    <div>Date: {% now "F j, Y" %}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="patient-doctor-info">
+            <div class="info-section">
+                <div class="info-title">Patient Information</div>
+                <div>{{patientName}}</div>
+                <div>{{mobile}}</div>
+                <div>{{address}}</div>
+            </div>
+            <div class="info-section">
+                <div class="info-title">Attending Doctor</div>
+                <div>Dr. {{assignedDoctorName}}</div>
+            </div>
+        </div>
+
+        <div class="symptoms-section">
+            <div class="info-title">Disease and Symptoms</div>
+            <div>{{symptoms}}</div>
+        </div>
+
+        <div class="charges-section">
+            <div class="info-title">Charges Breakdown</div>
+            <div class="charge-item">
+                <span>Room Charges ({{daySpent}} Days)</span>
+                <span>₹{{roomCharge}}</span>
+            </div>
+            <div class="charge-item">
+                <span>Doctor Fee</span>
+                <span>₹{{doctorFee}}</span>
+            </div>
+            <div class="charge-item">
+                <span>Medicine Cost</span>
+                <span>₹{{medicineCost}}</span>
+            </div>
+            <div class="charge-item">
+                <span>Other Charges</span>
+                <span>₹{{OtherCharge}}</span>
+            </div>
+            <div class="total-amount">
+                <span>Total Amount</span>
+                <span>₹{{total}}</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            Thank you for choosing our healthcare services.
+        </div>
+    </div>
+</body>
+
+</html>

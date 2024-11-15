@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Patient Dashboard</title>
+
+    <!-- CSS Dependencies -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --card-1: linear-gradient(135deg, #FF6B6B, #FF4757);
+            --card-2: linear-gradient(135deg, #4CAF50, #45B649);
+            --card-3: linear-gradient(135deg, #3B82F6, #2563EB);
+        }
+
+        .dashboard-cards {
+            padding: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .cards-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-1 { background: var(--card-1); }
+        .card-2 { background: var(--card-2); }
+        .card-3 { background: var(--card-3); }
+
+        .card-content {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+        }
+
+        .card-info h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+            word-break: break-word;
+        }
+
+        .card-info h4 {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin: 0.5rem 0 0 0;
+        }
+
+        .card-icon {
+            background: rgba(255, 255, 255, 0.2);
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+        }
+
+        .card-icon i {
+            color: white;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-cards {
+                padding: 1rem;
+            }
+            
+            .cards-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-cards">
+        <!-- First Row -->
+        <div class="cards-row">
+            <div class="info-card card-1">
+                <div class="card-content">
+                    <div class="card-info">
+                        <h3>{{doctorName}}</h3>
+                        <h4>Doctor Name</h4>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card card-2">
+                <div class="card-content">
+                    <div class="card-info">
+                        <h3>{{symptoms}}</h3>
+                        <h4>Symptoms</h4>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-notes-medical"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card card-3">
+                <div class="card-content">
+                    <div class="card-info">
+                        <h3>{{doctorMobile}}</h3>
+                        <h4>Doctor Mobile</h4>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Second Row -->
+        <div class="cards-row">
+            <div class="info-card card-1">
+                <div class="card-content">
+                    <div class="card-info">
+                        <h3>{{doctorAddress}}</h3>
+                        <h4>Doctor Address</h4>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card card-2">
+                <div class="card-content">
+                    <div class="card-info">
+                        <h3>{{doctorDepartment}}</h3>
+                        <h4>Doctor Department</h4>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-hospital"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card card-3">
+                <div class="card-content">
+                    <div class="card-info">
+                        <h3>{{admitDate}}</h3>
+                        <h4>Admit Date</h4>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

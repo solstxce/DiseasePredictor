@@ -1,0 +1,161 @@
+{% extends 'hospital/admin_base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container py-5">
+    <!-- Page Header -->
+    <div class="mb-5 text-center">
+        <h3 class="fw-bold mb-2">Doctor Management</h3>
+        <p class="text-muted">Manage all doctor-related operations from one place</p>
+    </div>
+
+    <div class="row g-4">
+        <!-- Doctor Record Card -->
+        <div class="col-md-6 col-lg-3">
+            <div class="dashboard-card bg-gradient-primary">
+                <a href="/admin-view-doctor" class="card-link">
+                    <div class="card-body p-4">
+                        <div class="icon-box mb-3">
+                            <i class="fas fa-user-nurse"></i>
+                        </div>
+                        <h5 class="card-title mb-1">Doctor Records</h5>
+                        <p class="card-text">View and manage doctor information</p>
+                        <div class="card-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Register Doctor Card -->
+        <div class="col-md-6 col-lg-3">
+            <div class="dashboard-card bg-gradient-success">
+                <a href="/admin-add-doctor" class="card-link">
+                    <div class="card-body p-4">
+                        <div class="icon-box mb-3">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h5 class="card-title mb-1">Register Doctor</h5>
+                        <p class="card-text">Add new doctors to the system</p>
+                        <div class="card-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Approve Doctor Card -->
+        <div class="col-md-6 col-lg-3">
+            <div class="dashboard-card bg-gradient-warning">
+                <a href="/admin-approve-doctor" class="card-link">
+                    <div class="card-body p-4">
+                        <div class="icon-box mb-3">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h5 class="card-title mb-1">Approve Doctor</h5>
+                        <p class="card-text">Review and approve doctor applications</p>
+                        <div class="card-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Specialisation Card -->
+        <div class="col-md-6 col-lg-3">
+            <div class="dashboard-card bg-gradient-info">
+                <a href="/admin-view-doctor-specialisation" class="card-link">
+                    <div class="card-body p-4">
+                        <div class="icon-box mb-3">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <h5 class="card-title mb-1">Specialisations</h5>
+                        <p class="card-text">Manage doctor specialisations</p>
+                        <div class="card-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .dashboard-card {
+        border: none;
+        border-radius: 1rem;
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-link {
+        text-decoration: none;
+        color: white;
+    }
+
+    .card-link:hover {
+        color: white;
+    }
+
+    .icon-box {
+        width: 60px;
+        height: 60px;
+        border-radius: 1rem;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        backdrop-filter: blur(10px);
+    }
+
+    .card-title {
+        font-weight: 600;
+    }
+
+    .card-text {
+        opacity: 0.9;
+        font-size: 0.9rem;
+        margin-bottom: 0;
+    }
+
+    .card-arrow {
+        position: absolute;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .dashboard-card:hover .card-arrow {
+        opacity: 1;
+        transform: translateX(5px);
+    }
+
+    .bg-gradient-primary {
+        background: linear-gradient(45deg, #4099ff, #73b4ff);
+    }
+
+    .bg-gradient-success {
+        background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+    }
+
+    .bg-gradient-warning {
+        background: linear-gradient(45deg, #FFB64D, #ffcb80);
+    }
+
+    .bg-gradient-info {
+        background: linear-gradient(45deg, #0dcaf0, #5bd1f3);
+    }
+</style>
+
+{% endblock content %}

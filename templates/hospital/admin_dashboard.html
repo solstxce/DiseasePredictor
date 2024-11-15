@@ -1,0 +1,170 @@
+{% extends 'hospital/admin_base.html' %}
+{% load static %}
+
+{% block content %}
+{%include 'hospital/admin_dashboard_cards.html'%}
+
+<div class="container-fluid py-5">
+    <div class="row g-4">
+        <!-- Recent Doctors Panel -->
+        <div class="col-md-6">
+            <div class="card shadow-sm rounded-lg">
+                <div class="card-header bg-white border-0 py-3">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-user-md text-primary me-2"></i>
+                        <h5 class="card-title mb-0">Recent Doctors</h5>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="px-4">Name</th>
+                                    <th>Department</th>
+                                    <th>Mobile</th>
+                                    <th class="text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for d in doctors %}
+                                <tr>
+                                    <td class="px-4">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-sm bg-primary-subtle rounded-circle me-2">
+                                                <i class="fas fa-user-md text-primary"></i>
+                                            </div>
+                                            {{d.get_name}}
+                                        </div>
+                                    </td>
+                                    <td>{{d.department}}</td>
+                                    <td>{{d.mobile}}</td>
+                                    <td class="text-center">
+                                        {% if d.status %}
+                                        <span class="badge bg-success rounded-pill px-3">Permanent</span>
+                                        {% else %}
+                                        <span class="badge bg-warning rounded-pill px-3">On Hold</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Patients Panel -->
+        <div class="col-md-6">
+            <div class="card shadow-sm rounded-lg">
+                <div class="card-header bg-white border-0 py-3">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-users text-success me-2"></i>
+                        <h5 class="card-title mb-0">Recent Patients</h5>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="px-4">Name</th>
+                                    <th>Symptoms</th>
+                                    <th>Mobile</th>
+                                    <th>Address</th>
+                                    <th class="text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for p in patients %}
+                                <tr>
+                                    <td class="px-4">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-sm bg-success-subtle rounded-circle me-2">
+                                                <i class="fas fa-user text-success"></i>
+                                            </div>
+                                            {{p.get_name}}
+                                        </div>
+                                    </td>
+                                    <td>{{p.symptoms}}</td>
+                                    <td>{{p.mobile}}</td>
+                                    <td>{{p.address}}</td>
+                                    <td class="text-center">
+                                        {% if p.status %}
+                                        <span class="badge bg-success rounded-pill px-3">Admitted</span>
+                                        {% else %}
+                                        <span class="badge bg-warning rounded-pill px-3">On Hold</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .card-header {
+        background: white;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .table th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+    }
+
+    .avatar-sm {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.875rem;
+    }
+
+    .badge {
+        font-weight: 500;
+        padding: 0.5em 1em;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .bg-primary-subtle {
+        background-color: rgba(13, 110, 253, 0.1);
+    }
+
+    .bg-success-subtle {
+        background-color: rgba(25, 135, 84, 0.1);
+    }
+
+    .table > :not(caption) > * > * {
+        padding: 1rem 0.75rem;
+    }
+
+    .table tbody tr:hover {
+        background-color: rgba(0,0,0,0.02);
+    }
+</style>
+
+{% endblock content %}

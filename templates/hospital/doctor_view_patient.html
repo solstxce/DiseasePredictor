@@ -1,0 +1,261 @@
+{% extends 'hospital/doctor_base.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+    .dashboard-container {
+        max-width: 1400px;
+        margin: 2rem auto;
+        padding: 0 2rem;
+    }
+
+    .data-card {
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        animation: slideUp 0.5s ease-out;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        padding: 1.5rem;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .search-form {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .search-input {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        min-width: 250px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        backdrop-filter: blur(4px);
+    }
+
+    .search-input::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .search-button {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(4px);
+    }
+
+    .search-button:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .table-container {
+        padding: 1.5rem;
+        overflow-x: auto;
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 0.75rem;
+    }
+
+    .data-table th {
+        padding: 1rem;
+        font-weight: 600;
+        color: #1e293b;
+        text-align: left;
+        background: #f8fafc;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .data-table td {
+        padding: 1rem;
+        vertical-align: middle;
+        background: white;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .data-table tr {
+        transition: all 0.3s ease;
+    }
+
+    .data-table tr:hover td {
+        background: #f8fafc;
+    }
+
+    .profile-container {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .profile-pic {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        object-fit: cover;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .patient-name {
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    .symptoms-cell {
+        max-width: 200px;
+        color: #64748b;
+    }
+
+    .contact-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        color: #64748b;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .info-icon {
+        color: #94a3b8;
+        width: 16px;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: #64748b;
+    }
+
+    .empty-icon {
+        font-size: 3rem;
+        color: #94a3b8;
+        margin-bottom: 1rem;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .dashboard-container {
+            padding: 1rem;
+        }
+
+        .card-header {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .search-input {
+            min-width: auto;
+        }
+
+        .data-table {
+            font-size: 0.875rem;
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+        }
+
+        .symptoms-cell {
+            max-width: 150px;
+        }
+    }
+</style>
+
+<div class="dashboard-container">
+    <div class="data-card">
+        <div class="card-header">
+            <h2 class="card-title">Your Patients</h2>
+            <form action="/search" method="get" class="search-form">
+                <input type="search" class="search-input" placeholder="Search patients..." name="query" id="query">
+                <button type="submit" class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
+
+        <div class="table-container">
+            {% if patients %}
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Symptoms</th>
+                        <th>Contact Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in patients %}
+                    <tr>
+                        <td>
+                            <div class="profile-container">
+                                <img src="{% static p.profile_pic.url %}" alt="Profile" class="profile-pic">
+                                <span class="patient-name">{{p.get_name}}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="symptoms-cell">{{p.symptoms}}</div>
+                        </td>
+                        <td>
+                            <div class="contact-info">
+                                <div class="info-item">
+                                    <i class="fas fa-phone info-icon"></i>
+                                    {{p.mobile}}
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-map-marker-alt info-icon"></i>
+                                    {{p.address}}
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-user-injured empty-icon"></i>
+                <h3>No Patients Found</h3>
+                <p>There are no patients to display at this time.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

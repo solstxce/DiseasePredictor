@@ -1,0 +1,158 @@
+{% extends 'hospital/patient_base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<style>
+    .booking-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+    }
+
+    .booking-card {
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        animation: slideUp 0.5s ease-out;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        padding: 2rem;
+        text-align: center;
+        color: white;
+    }
+
+    .header-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .header-title {
+        font-size: 1.75rem;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .card-body {
+        padding: 2.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: 500;
+        color: #1e293b;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        outline: none;
+    }
+
+    .form-control::placeholder {
+        color: #94a3b8;
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 500;
+        width: 100%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .alert {
+        padding: 1rem;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        background: #f8fafc;
+        border-left: 4px solid #3b82f6;
+        color: #1e293b;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .booking-container {
+            padding: 1rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+    }
+</style>
+
+<div class="booking-container">
+    <div class="booking-card">
+        <div class="card-header">
+            <i class="fas fa-calendar-plus header-icon"></i>
+            <h1 class="header-title">Book an Appointment</h1>
+        </div>
+
+        <div class="card-body">
+            {% if message %}
+            <div class="alert">
+                <i class="fas fa-info-circle me-2"></i>
+                {{message}}
+            </div>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    {% render_field appointmentForm.description class="form-control" placeholder="Please describe your symptoms or reason for visit" %}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Select Doctor</label>
+                    {% render_field appointmentForm.doctorId class="form-control" %}
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-calendar-check me-2"></i>
+                    Book Appointment
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

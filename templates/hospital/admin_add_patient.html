@@ -1,0 +1,240 @@
+{% extends 'hospital/admin_base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<style>
+    .page-container {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .page-header {
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .page-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 0.5rem;
+    }
+
+    .page-subtitle {
+        color: #64748b;
+        font-size: 1.1rem;
+    }
+
+    .form-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        padding: 2rem;
+    }
+
+    .form-section {
+        margin-bottom: 2rem;
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: 500;
+        color: #475569;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        background-color: #f8fafc;
+    }
+
+    .form-control:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        background-color: white;
+    }
+
+    .form-control::placeholder {
+        color: #94a3b8;
+    }
+
+    .profile-upload {
+        position: relative;
+        text-align: center;
+        padding: 2rem;
+        border: 2px dashed #e2e8f0;
+        border-radius: 10px;
+        background: #f8fafc;
+        transition: all 0.3s ease;
+    }
+
+    .profile-upload:hover {
+        border-color: #3b82f6;
+        background: #f0f9ff;
+    }
+
+    .upload-icon {
+        font-size: 2rem;
+        color: #64748b;
+        margin-bottom: 1rem;
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        width: 100%;
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(37, 99, 235, 0.2);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .page-container {
+            padding: 1rem;
+        }
+
+        .form-card {
+            padding: 1.5rem;
+        }
+    }
+</style>
+
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Add New Patient</h1>
+        <p class="page-subtitle">Enter patient details to create a new record</p>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="form-card">
+        {% csrf_token %}
+
+        <!-- Personal Information -->
+        <div class="form-section">
+            <h3 class="section-title">
+                <i class="fas fa-user me-2"></i>Personal Information
+            </h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">First Name</label>
+                        {% render_field userForm.first_name class="form-control" placeholder="Enter first name" %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Last Name</label>
+                        {% render_field userForm.last_name class="form-control" placeholder="Enter last name" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Information -->
+        <div class="form-section">
+            <h3 class="section-title">
+                <i class="fas fa-lock me-2"></i>Account Details
+            </h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Username</label>
+                        {% render_field userForm.username class="form-control" placeholder="Choose a username" %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        {% render_field userForm.password class="form-control" placeholder="Create a password" type="password" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="form-section">
+            <h3 class="section-title">
+                <i class="fas fa-address-card me-2"></i>Contact Information
+            </h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Mobile Number</label>
+                        {% render_field patientForm.mobile class="form-control" placeholder="Enter mobile number" %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Address</label>
+                        {% render_field patientForm.address class="form-control" placeholder="Enter address" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medical Information -->
+        <div class="form-section">
+            <h3 class="section-title">
+                <i class="fas fa-notes-medical me-2"></i>Medical Information
+            </h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Symptoms</label>
+                        {% render_field patientForm.symptoms class="form-control" placeholder="Enter symptoms" %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Assigned Doctor</label>
+                        {% render_field patientForm.assignedDoctorId class="form-control" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Picture -->
+        <div class="form-section">
+            <h3 class="section-title">
+                <i class="fas fa-camera me-2"></i>Profile Picture
+            </h3>
+            <div class="profile-upload">
+                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                {% render_field patientForm.profile_pic class="form-control" %}
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-submit">
+            <i class="fas fa-user-plus me-2"></i>Add Patient
+        </button>
+    </form>
+</div>
+
+{% endblock content %}

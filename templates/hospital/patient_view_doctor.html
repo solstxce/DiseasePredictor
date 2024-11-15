@@ -1,0 +1,210 @@
+{% extends 'hospital/patient_base.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+    .doctors-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+    }
+
+    .search-section {
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .search-form {
+        display: flex;
+        gap: 0.5rem;
+        max-width: 400px;
+    }
+
+    .search-input {
+        padding: 0.75rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 1rem;
+        width: 100%;
+        transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        outline: none;
+    }
+
+    .search-btn {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .search-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .doctors-card {
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        padding: 1.5rem;
+        text-align: center;
+        color: white;
+    }
+
+    .header-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .doctors-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        padding: 1.5rem;
+    }
+
+    .doctors-table th {
+        background: #f8fafc;
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+        color: #1e293b;
+        text-transform: uppercase;
+        font-size: 0.875rem;
+        letter-spacing: 0.05em;
+    }
+
+    .doctors-table td {
+        padding: 1rem;
+        border-bottom: 1px solid #e2e8f0;
+        color: #475569;
+        vertical-align: middle;
+    }
+
+    .doctors-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .doctors-table tr:hover td {
+        background: #f8fafc;
+    }
+
+    .doctor-profile-pic {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #e2e8f0;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1.5rem;
+        color: #ef4444;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .doctors-container {
+            padding: 1rem;
+        }
+
+        .doctors-table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .doctors-table th,
+        .doctors-table td {
+            padding: 0.75rem;
+        }
+
+        .search-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .search-form {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="doctors-container">
+    <div class="search-section">
+        <form action="/searchdoctor" method="get" class="search-form">
+            <input class="search-input" type="search" placeholder="Search doctors..." name="query" id="query">
+            <button class="search-btn" type="submit">
+                <i class="fas fa-search me-2"></i>
+                Search
+            </button>
+        </form>
+    </div>
+
+    {% if doctors %}
+    <div class="doctors-card">
+        <div class="card-header">
+            <h1 class="header-title">Our Doctors</h1>
+        </div>
+
+        <table class="doctors-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Profile Picture</th>
+                    <th>Mobile</th>
+                    <th>Address</th>
+                    <th>Department</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in doctors %}
+                <tr>
+                    <td>Dr. {{d.get_name}}</td>
+                    <td>
+                        <img src="{% static d.profile_pic.url %}" alt="Profile Pic" class="doctor-profile-pic"/>
+                    </td>
+                    <td>{{d.mobile}}</td>
+                    <td>{{d.address}}</td>
+                    <td>{{d.department}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-user-md fa-3x mb-3"></i>
+        <h4>No Doctor Found!</h4>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock content %}

@@ -1,0 +1,143 @@
+{% extends 'hospital/patient_base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .dashboard-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+    }
+
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .action-card {
+        background: white;
+        border-radius: 24px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        position: relative;
+        min-height: 200px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .action-card.view {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+    }
+
+    .action-card.book {
+        background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    .card-content {
+        padding: 2rem;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        color: white;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .card-description {
+        font-size: 1rem;
+        opacity: 0.9;
+        margin-bottom: 1.5rem;
+    }
+
+    .card-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .card-footer {
+        font-size: 0.875rem;
+        opacity: 0.8;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .action-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    .action-card a {
+        text-decoration: none;
+        color: white;
+        display: block;
+        height: 100%;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .cards-grid {
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    @media (max-width: 768px) {
+        .dashboard-container {
+            padding: 1rem;
+        }
+        
+        .cards-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="dashboard-container">
+    <div class="cards-grid">
+        <div class="action-card view">
+            <a href="/patient-view-appointment">
+                <div class="card-content">
+                    <div>
+                        <i class="fas fa-calendar card-icon"></i>
+                        <h2 class="card-title">View Appointments</h2>
+                        <p class="card-description">Check your scheduled appointments and their status</p>
+                    </div>
+                    <div class="card-footer">
+                        Click to view appointments →
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="action-card book">
+            <a href="/patient-book-appointment">
+                <div class="card-content">
+                    <div>
+                        <i class="fas fa-book-medical card-icon"></i>
+                        <h2 class="card-title">Book Appointment</h2>
+                        <p class="card-description">Schedule a new appointment with our healthcare professionals</p>
+                    </div>
+                    <div class="card-footer">
+                        Click to book appointment →
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
