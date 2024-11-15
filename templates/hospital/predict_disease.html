@@ -142,6 +142,83 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         margin-top: 2rem;
     }
+
+    /* Select2 Custom Styling */
+    .select2-container--bootstrap-5 .select2-selection {
+        min-height: 50px;
+        padding: 0.5rem;
+        font-size: 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        background-color: #fff;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .select2-container--bootstrap-5 .select2-selection--multiple {
+        padding: 5px 8px;
+    }
+
+    .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice {
+        background-color: #0d6efd;
+        color: #fff;
+        border: none;
+        border-radius: 20px;
+        padding: 4px 12px;
+        margin: 4px;
+        font-size: 0.9rem;
+    }
+
+    .select2-container--bootstrap-5 .select2-selection__choice__remove {
+        color: #fff !important;
+        margin-right: 5px;
+        border: none !important;
+    }
+
+    .select2-container--bootstrap-5 .select2-selection__choice__remove:hover {
+        background-color: transparent !important;
+        color: #ffc107 !important;
+    }
+
+    .select2-container--bootstrap-5 .select2-dropdown {
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .select2-container--bootstrap-5 .select2-results__option {
+        padding: 8px 12px;
+        font-size: 0.95rem;
+    }
+
+    .select2-container--bootstrap-5 .select2-results__option--highlighted {
+        background-color: #0d6efd !important;
+        color: #fff;
+    }
+
+    .select2-search__field {
+        padding: 8px !important;
+    }
+
+    .select2-container--bootstrap-5 .select2-search__field:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+
+    /* Symptoms section styling */
+    .symptoms-section {
+        background: #fff;
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .symptoms-label {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #344767;
+        margin-bottom: 1rem;
+        display: block;
+    }
 </style>
 
 <section class="prediction-section">
@@ -206,8 +283,10 @@
                 </div>
 
                 <!-- Symptoms Selection -->
-                <div class="form-group mb-4">
-                    <label class="form-label">Select Symptoms</label>
+                <div class="form-group mb-4 symptoms-section">
+                    <label class="symptoms-label">
+                        <i class="fas fa-notes-medical me-2"></i>Select Symptoms
+                    </label>
                     <select class="form-control" id="symptoms" multiple data-placeholder="Search and select symptoms...">
                         <option value="itching">Itching</option>
                         <option value="skin_rash">Skin Rash</option>
@@ -280,6 +359,7 @@
 
 <!-- Include necessary scripts -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
@@ -287,10 +367,27 @@
     $(document).ready(function() {
         // Initialize Select2
         $('#symptoms').select2({
-            theme: 'bootstrap4',
+            theme: 'bootstrap-5',
+            width: '100%',
             placeholder: 'Search and select symptoms...',
             allowClear: true,
-            width: '100%'
+            closeOnSelect: false,
+            selectionCssClass: 'select2--large',
+            dropdownCssClass: 'select2--large',
+            containerCssClass: 'select2-selection--large',
+            maximumSelectionLength: 10, // Optional: limit maximum selections
+            language: {
+                maximumSelected: function (e) {
+                    return "You can select up to " + e.maximum + " symptoms";
+                }
+            }
+        });
+
+        // Optional: Add custom placeholder text when no options are selected
+        $('#symptoms').on('select2:unselect', function(e) {
+            if (!$('#symptoms').val() || $('#symptoms').val().length === 0) {
+                $('.select2-search__field').attr('placeholder', 'Search and select symptoms...');
+            }
         });
 
         async function getVitalSigns() {
