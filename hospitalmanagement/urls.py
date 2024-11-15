@@ -63,6 +63,8 @@ urlpatterns = [
     path('admin-approve-appointment', views.admin_approve_appointment_view,name='admin-approve-appointment'),
     path('approve-appointment/<int:pk>', views.approve_appointment_view,name='approve-appointment'),
     path('reject-appointment/<int:pk>', views.reject_appointment_view,name='reject-appointment'),
+    path('predict-disease', views.predict_disease_view, name='predict-disease'),
+    # path('predict-disease-result', views.predict_disease_result_view, name='predict-disease-result'),
 ]
 
 
