@@ -100,12 +100,13 @@
         .form-control {
             width: 100%;
             padding: 0.75rem 1rem;
-            padding-left: 2.5rem;
+            padding-left: 3rem;
             border: 2px solid #e2e8f0;
             border-radius: 12px;
             font-size: 0.95rem;
             transition: all 0.3s ease;
             background-color: white;
+            text-indent: 1.5rem;
         }
 
         .form-control:focus {
@@ -119,6 +120,9 @@
             top: 2.75rem;
             color: #94a3b8;
             transition: all 0.3s ease;
+            width: 1.2rem;
+            text-align: center;
+            pointer-events: none;
         }
 
         .form-control:focus + .form-icon {
@@ -200,6 +204,7 @@
             background-repeat: no-repeat;
             background-position: right 1rem center;
             background-size: 1.5rem;
+            padding-right: 3rem;
         }
 
         /* Error States */
@@ -250,6 +255,14 @@
 
             .col-md-6 {
                 padding: 0;
+            }
+
+            .form-control {
+                padding-left: 3rem;
+            }
+            
+            .form-icon {
+                left: 1rem;
             }
         }
     </style>
