@@ -615,10 +615,47 @@
                 // Format confidence as percentage
                 const confidence = (data.confidence * 100).toFixed(1);
                 
-                // Determine alert class based on confidence
+                // Determine alert class and recommendation based on confidence
                 let alertClass = 'alert-success';
-                if (confidence < 50) alertClass = 'alert-danger';
-                else if (confidence < 75) alertClass = 'alert-warning';
+                let recommendation = '';
+                let actionButton = '';
+                
+                if (confidence < 50) {
+                    alertClass = 'alert-danger';
+                    recommendation = `
+                        <div class="alert alert-warning mt-3">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Medical Attention Recommended:</strong> 
+                            Based on the low confidence score, we strongly recommend consulting a doctor for proper diagnosis and treatment.
+                        </div>`;
+                    actionButton = `
+                        <a href="{% url 'patientclick' %}" class="btn btn-danger mt-3">
+                            <i class="fas fa-user-md me-2"></i>Book Doctor Appointment
+                        </a>`;
+                } else if (confidence < 75) {
+                    alertClass = 'alert-warning';
+                    recommendation = `
+                        <div class="alert alert-info mt-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Precautionary Visit Advised:</strong> 
+                            While the prediction confidence is moderate, it's recommended to consult a doctor for a thorough evaluation.
+                        </div>`;
+                    actionButton = `
+                        <a href="{% url 'patientclick' %}" class="btn btn-warning mt-3">
+                            <i class="fas fa-user-md me-2"></i>Schedule a Check-up
+                        </a>`;
+                } else {
+                    recommendation = `
+                        <div class="alert alert-success mt-3">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <strong>High Confidence Prediction:</strong> 
+                            While our system is confident in this prediction, it's always good practice to consult a healthcare professional.
+                        </div>`;
+                    actionButton = `
+                        <a href="{% url 'patientclick' %}" class="btn btn-success mt-3">
+                            <i class="fas fa-user-md me-2"></i>Book Optional Consultation
+                        </a>`;
+                }
 
                 const resultsHtml = `
                     <div class="alert ${alertClass}">
@@ -641,6 +678,10 @@
                         <div class="mt-3 small text-muted">
                             Prediction made at: ${new Date().toLocaleString()}
                         </div>
+                    </div>
+                    ${recommendation}
+                    <div class="text-center">
+                        ${actionButton}
                     </div>
                 `;
                 $('#predictionResults').html(resultsHtml);
