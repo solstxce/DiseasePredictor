@@ -837,9 +837,26 @@ symptoms_list = [
     "high_fever", "sunken_eyes", "breathlessness", "sweating", "dehydration", "indigestion", "headache",
     "yellowish_skin", "dark_urine", "nausea", "loss_of_appetite", "pain_behind_the_eyes", "back_pain",
     "constipation", "abdominal_pain", "diarrhoea", "mild_fever", "yellow_urine", "yellowing_of_eyes",
-    "acute_liver_failure", "fluid_overload", "swelling_of_stomach", "swelled_lymph_nodes", "malaise"
+    "acute_liver_failure", "fluid_overload", "swelling_of_stomach", "swelled_lymph_nodes", "malaise",
+    "blurred_and_distorted_vision", "phlegm", "throat_irritation", "redness_of_eyes", "sinus_pressure",
+    "runny_nose", "congestion", "chest_pain", "weakness_in_limbs", "fast_heart_rate",
+    "pain_during_bowel_movements", "pain_in_anal_region", "bloody_stool", "irritation_in_anus", "neck_pain",
+    "dizziness", "cramps", "bruising", "obesity", "swollen_legs", "swollen_blood_vessels",
+    "puffy_face_and_eyes", "enlarged_thyroid", "brittle_nails", "swollen_extremeties", "excessive_hunger",
+    "extra_marital_contacts", "drying_and_tingling_lips", "slurred_speech", "knee_pain", "hip_joint_pain",
+    "muscle_weakness", "stiff_neck", "swelling_joints", "movement_stiffness", "spinning_movements",
+    "loss_of_balance", "unsteadiness", "weakness_of_one_body_side", "loss_of_smell", "bladder_discomfort",
+    "foul_smell_of_urine", "continuous_feel_of_urine", "passage_of_gases", "internal_itching",
+    "toxic_look_(typhos)", "depression", "irritability", "muscle_pain", "altered_sensorium",
+    "red_spots_over_body", "belly_pain", "abnormal_menstruation", "dischromic_patches",
+    "watering_from_eyes", "increased_appetite", "polyuria", "family_history", "mucoid_sputum",
+    "rusty_sputum", "lack_of_concentration", "visual_disturbances", "receiving_blood_transfusion",
+    "receiving_unsterile_injections", "coma", "stomach_bleeding", "distention_of_abdomen",
+    "history_of_alcohol_consumption", "fluid_overload", "blood_in_sputum", "prominent_veins_on_calf",
+    "palpitations", "painful_walking", "pus_filled_pimples", "blackheads", "scurring", "skin_peeling",
+    "silver_like_dusting", "small_dents_in_nails", "inflammatory_nails", "blister",
+    "red_sore_around_nose", "yellow_crust_ooze"
 ]
-
 def generate_health_data():
     """Generate simulated health data"""
     return {
@@ -858,12 +875,15 @@ def make_prediction(request):
     """API endpoint for disease prediction"""
     if request.method == 'POST':
         try:
+            # Parse the JSON data from request
             data = json.loads(request.body)
-            symptoms = data.get('symptoms', [])
+            selected_symptoms = data.get('symptoms', [])
             
-            # Create symptom vector
+            # Create a zero vector for all symptoms
             symptom_vector = np.zeros(len(symptoms_list))
-            for symptom in symptoms:
+            
+            # Set 1 for each selected symptom
+            for symptom in selected_symptoms:
                 if symptom in symptoms_list:
                     index = symptoms_list.index(symptom)
                     symptom_vector[index] = 1
@@ -880,16 +900,15 @@ def make_prediction(request):
             })
             
         except Exception as e:
-            print(f"Error in disease prediction: {e}")
             return JsonResponse({
-                'error': 'Failed to predict disease',
+                'error': 'Prediction failed',
                 'message': str(e)
             }, status=500)
     
     return JsonResponse({
-        'symptoms': symptoms_list,
-        'message': 'Please select symptoms for prediction'
-    })
+        'error': 'Invalid request method',
+        'message': 'This endpoint only accepts POST requests'
+    }, status=405)
 
 def get_vitals(request):
     """Generate and return simulated vital signs data"""
@@ -918,12 +937,15 @@ def predict_disease_view(request):
 def make_prediction(request):
     if request.method == 'POST':
         try:
+            # Parse the JSON data from request
             data = json.loads(request.body)
-            symptoms = data.get('symptoms', [])
+            selected_symptoms = data.get('symptoms', [])
             
-            # Create symptom vector
+            # Create a zero vector for all symptoms
             symptom_vector = np.zeros(len(symptoms_list))
-            for symptom in symptoms:
+            
+            # Set 1 for each selected symptom
+            for symptom in selected_symptoms:
                 if symptom in symptoms_list:
                     index = symptoms_list.index(symptom)
                     symptom_vector[index] = 1
