@@ -27,7 +27,7 @@ SECRET_KEY = 'hpbv()ep00boce&o0w7z1h)st148(*m@6@-rk$nn)(n9ojj4c0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["predictors.site","127.0.0.1"]
+ALLOWED_HOSTS = ["predictors.site","127.0.0.1","localhost","0.0.0.0","34.93.255.202","144.126.254.154"]
 
 
 # Application definition
@@ -111,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -153,6 +153,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://predictors.site',
     'http://localhost:8080',
     'http://127.0.0.1:8080',
+    'http://144.126.254.154:8083',
 ]
 
 # If you're using HTTPS
@@ -160,12 +161,13 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
 # If you need to debug CSRF issues
-CSRF_COOKIE_HTTPONLY = False  # Allows JavaScript to read the cookie
+CSRF_COOKIE_HTTPONLY = True  # Allows JavaScript to read the cookie
 
 CORS_ALLOWED_ORIGINS = [
     'https://predictors.site',
     'http://localhost:8080',
     'http://127.0.0.1:8080',
+    'http://144.126.254.154:8083',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
